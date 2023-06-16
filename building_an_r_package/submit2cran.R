@@ -11,6 +11,21 @@ devtools::test() # if you have any test files (like testThat), this runs the tes
 # be resolved. CRAN wont publish your package if there's any errors, warnings, or notes
 devtools::check(vignettes = F) # vignettes = F doesnt check your vignette and makes this go quicker.
 
+#When using JAGS - you need to save your model code in a separate file, otherwise you'll get errors when
+#running code. SAve your JAGS code as a text file within the inst folder (you can make a folder inside this
+#for your JAGS files).
+#This is the code you want to use:
+jags_file <- system.file("name_of_jags_folder_in_inst", "jags_script_name.jags", package = "your_package_name")
+output <- R2jags::jags(
+    data = data,
+    parameters.to.save = c("param1"),
+    model.file = jags_file,
+    n.chains = mcmc_control$n.chain,
+    n.iter = mcmc_control$iter,
+    n.burnin = mcmc_control$burn,
+    n.thin = mcmc_control$thin
+  )
+
 
 
 # CRAN checks -------------------------------------------------------------
